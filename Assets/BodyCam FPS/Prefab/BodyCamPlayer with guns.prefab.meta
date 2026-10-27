@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: c24ddf5b34393ff4a905262cee643353
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 376382
+  packageName: Realistic Bodycam FPS Controller
+  packageVersion: 2.0.0
+  assetPath: Assets/BodyCam FPS/Prefab/BodyCamPlayer with guns.prefab
+  uploadId: 991874

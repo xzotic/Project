@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: b32814107a0684cbca9d30c919d2ffd9
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 249430
+  packageName: '3D Roguelike RPG Complete Kit for Mobile and PC: TPS, Enemy AI, Puzzle and Props'
+  packageVersion: 7.0
+  assetPath: Assets/AdvancedRogueLikeandPuzzleSystem/Prefabs/Particles/Sparkles.prefab
+  uploadId: 1001972

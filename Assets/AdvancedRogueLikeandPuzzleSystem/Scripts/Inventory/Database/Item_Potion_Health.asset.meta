@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 98017c8c4a170d24d890f5a6c4ada5fd
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 249430
+  packageName: '3D Roguelike RPG Complete Kit for Mobile and PC: TPS, Enemy AI, Puzzle and Props'
+  packageVersion: 7.0
+  assetPath: Assets/AdvancedRogueLikeandPuzzleSystem/Scripts/Inventory/Database/Item_Potion_Health.asset
+  uploadId: 1001972

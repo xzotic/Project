@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4eebcd5df3544fd438009f8e83a90843
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 376382
+  packageName: Realistic Bodycam FPS Controller
+  packageVersion: 2.0.0
+  assetPath: Assets/BodyCam FPS/DemoSceneBackground/Skybox/DemoScene.mat
+  uploadId: 991874

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: bf3f322deda6095409d81717f7409b22
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 376382
+  packageName: Realistic Bodycam FPS Controller
+  packageVersion: 2.0.0
+  assetPath: Assets/BodyCam FPS/Scripts/BodycamCameraMovementSound.cs
+  uploadId: 991874

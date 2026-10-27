@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: b215f18f9b1bfae47821511282ec88ae
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 249430
+  packageName: '3D Roguelike RPG Complete Kit for Mobile and PC: TPS, Enemy AI, Puzzle and Props'
+  packageVersion: 7.0
+  assetPath: Assets/AdvancedRogueLikeandPuzzleSystem/Prefabs/Environment/WaterToSwim.prefab
+  uploadId: 1001972

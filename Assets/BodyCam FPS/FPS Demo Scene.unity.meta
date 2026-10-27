@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: e2da2164677b7e047921e37f58ed372c
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 376382
+  packageName: Realistic Bodycam FPS Controller
+  packageVersion: 2.0.0
+  assetPath: Assets/BodyCam FPS/FPS Demo Scene.unity
+  uploadId: 991874

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 7a248485015f5b14d88e9880a62ac323
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 376382
+  packageName: Realistic Bodycam FPS Controller
+  packageVersion: 2.0.0
+  assetPath: Assets/BodyCam FPS/Scripts/BodycamPlayerHealth.cs
+  uploadId: 991874

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: ad27d7bb3c3e2ea4584f0b20baeae2ee
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 376382
+  packageName: Realistic Bodycam FPS Controller
+  packageVersion: 2.0.0
+  assetPath: Assets/BodyCam FPS/Prefab/RoomTone.prefab
+  uploadId: 991874

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2116dba073f690c46b159d1d75ba4c26
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 249430
+  packageName: '3D Roguelike RPG Complete Kit for Mobile and PC: TPS, Enemy AI, Puzzle and Props'
+  packageVersion: 7.0
+  assetPath: Assets/AdvancedRogueLikeandPuzzleSystem/Scripts/Inventory/Database/Item_Sword.asset
+  uploadId: 1001972

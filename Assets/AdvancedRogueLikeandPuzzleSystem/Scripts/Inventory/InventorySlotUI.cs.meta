@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: e7e7af8380c397747ac9031c0a848865
+AssetOrigin:
+  serializedVersion: 1
+  productId: 249430
+  packageName: '3D Roguelike RPG Complete Kit for Mobile and PC: TPS, Enemy AI, Puzzle and Props'
+  packageVersion: 7.0
+  assetPath: Assets/AdvancedRogueLikeandPuzzleSystem/Scripts/Inventory/InventorySlotUI.cs
+  uploadId: 1001972

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 3527c6686fe68714a899628e0205cf0a
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 376382
+  packageName: Realistic Bodycam FPS Controller
+  packageVersion: 2.0.0
+  assetPath: Assets/BodyCam FPS/DemoSceneBackground/Materials/concrete2.mat
+  uploadId: 991874

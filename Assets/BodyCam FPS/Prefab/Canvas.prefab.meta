@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 19dd5267a67c7f640a9f823c123e5473
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 376382
+  packageName: Realistic Bodycam FPS Controller
+  packageVersion: 2.0.0
+  assetPath: Assets/BodyCam FPS/Prefab/Canvas.prefab
+  uploadId: 991874

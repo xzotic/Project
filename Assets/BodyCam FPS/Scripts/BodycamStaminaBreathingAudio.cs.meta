@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: c5925f09f3f3c724499e811f76881d94
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 376382
+  packageName: Realistic Bodycam FPS Controller
+  packageVersion: 2.0.0
+  assetPath: Assets/BodyCam FPS/Scripts/BodycamStaminaBreathingAudio.cs
+  uploadId: 991874

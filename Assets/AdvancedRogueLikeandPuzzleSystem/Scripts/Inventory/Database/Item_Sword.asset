@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e70d681b5e1cb34ead84e990de85597, type: 3}
+  m_Name: Item_Sword
+  m_EditorClassIdentifier: Assembly-CSharp::AdvancedRogueLikeandPuzzleSystem.ItemDefinition
+  Id: 1
+  DisplayName: Sword
+  Icon: {fileID: 21300000, guid: 9f6f9d67517e3694fa9c55134bfe8d75, type: 3}
+  Kind: 0
+  Stackable: 0
+  MaxStack: 1
+  SingleStackOnly: 0
+  WeaponPrefab: {fileID: 5734946974689827320, guid: 015f6213e21d64f1caf762e667a4c8f0, type: 3}
+  WeaponType: 1
+  PotionType: 0
+  PotionParameter: 25

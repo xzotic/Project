@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 593bc557a4b19dd4fa0508a506a4d5a8
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 112000000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 376382
+  packageName: Realistic Bodycam FPS Controller
+  packageVersion: 2.0.0
+  assetPath: Assets/BodyCam FPS/FPS Demo Scene/LightingData.asset
+  uploadId: 991874

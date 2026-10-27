@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 84959ccf61b933d46b3153265856beca
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 376382
+  packageName: Realistic Bodycam FPS Controller
+  packageVersion: 2.0.0
+  assetPath: Assets/BodyCam FPS/DemoSceneBackground/Materials/forest.mat
+  uploadId: 991874

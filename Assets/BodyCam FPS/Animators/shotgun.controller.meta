@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 50f1fc89ffe0c6845981d1fcc1a4551e
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 376382
+  packageName: Realistic Bodycam FPS Controller
+  packageVersion: 2.0.0
+  assetPath: Assets/BodyCam FPS/Animators/shotgun.controller
+  uploadId: 991874

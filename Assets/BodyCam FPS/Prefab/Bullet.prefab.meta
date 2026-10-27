@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 52d1f1798a461e04fbe24bcaba509666
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 376382
+  packageName: Realistic Bodycam FPS Controller
+  packageVersion: 2.0.0
+  assetPath: Assets/BodyCam FPS/Prefab/Bullet.prefab
+  uploadId: 991874

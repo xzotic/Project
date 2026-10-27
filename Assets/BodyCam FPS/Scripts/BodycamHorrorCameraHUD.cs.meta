@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 5793fef49ec64884e8a9001a6bae24bc
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 376382
+  packageName: Realistic Bodycam FPS Controller
+  packageVersion: 2.0.0
+  assetPath: Assets/BodyCam FPS/Scripts/BodycamHorrorCameraHUD.cs
+  uploadId: 991874

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a07d775817541d94aaa0ee9e2c4b3942
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 376382
+  packageName: Realistic Bodycam FPS Controller
+  packageVersion: 2.0.0
+  assetPath: Assets/BodyCam FPS/DemoSceneBackground/Materials/fence.mat
+  uploadId: 991874

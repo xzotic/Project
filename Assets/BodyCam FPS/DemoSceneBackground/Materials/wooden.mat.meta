@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: fb64d0a6e62830c4e8668cb903b356b8
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 376382
+  packageName: Realistic Bodycam FPS Controller
+  packageVersion: 2.0.0
+  assetPath: Assets/BodyCam FPS/DemoSceneBackground/Materials/wooden.mat
+  uploadId: 991874

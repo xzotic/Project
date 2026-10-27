@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f9490293800ef8d4eb9adc346fdb7c5d
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 376382
+  packageName: Realistic Bodycam FPS Controller
+  packageVersion: 2.0.0
+  assetPath: Assets/BodyCam FPS/DemoSceneBackground/TemporaryGun/materialskin.mat
+  uploadId: 991874

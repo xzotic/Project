@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e70d681b5e1cb34ead84e990de85597, type: 3}
+  m_Name: Item_Axe
+  m_EditorClassIdentifier: Assembly-CSharp::AdvancedRogueLikeandPuzzleSystem.ItemDefinition
+  Id: 2
+  DisplayName: Axe
+  Icon: {fileID: 21300000, guid: c28dac12762178b478bb7d38df5fd4c9, type: 3}
+  Kind: 0
+  Stackable: 0
+  MaxStack: 1
+  SingleStackOnly: 0
+  WeaponPrefab: {fileID: 5320091430080879020, guid: 251d9bac9979b4293895d4f6d9191925, type: 3}
+  WeaponType: 3
+  PotionType: 0
+  PotionParameter: 25

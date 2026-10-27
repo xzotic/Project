@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 25a50ff234cdf114d96d9af17b59622f
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 376382
+  packageName: Realistic Bodycam FPS Controller
+  packageVersion: 2.0.0
+  assetPath: Assets/BodyCam FPS/Animators/Rifle.controller
+  uploadId: 991874

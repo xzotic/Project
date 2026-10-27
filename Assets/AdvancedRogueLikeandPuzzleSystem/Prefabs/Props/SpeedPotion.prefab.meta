@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: ae5541a612926e447b6b8b232f49349f
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 249430
+  packageName: '3D Roguelike RPG Complete Kit for Mobile and PC: TPS, Enemy AI, Puzzle and Props'
+  packageVersion: 7.0
+  assetPath: Assets/AdvancedRogueLikeandPuzzleSystem/Prefabs/Props/SpeedPotion.prefab
+  uploadId: 1001972

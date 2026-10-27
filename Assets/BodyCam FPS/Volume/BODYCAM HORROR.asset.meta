@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c1988227260144a45a8982ee58c49623
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 376382
+  packageName: Realistic Bodycam FPS Controller
+  packageVersion: 2.0.0
+  assetPath: Assets/BodyCam FPS/Volume/BODYCAM HORROR.asset
+  uploadId: 991874

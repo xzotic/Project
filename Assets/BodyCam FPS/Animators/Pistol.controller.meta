@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f9b1a85a20d8c434480c9223fb795bea
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 376382
+  packageName: Realistic Bodycam FPS Controller
+  packageVersion: 2.0.0
+  assetPath: Assets/BodyCam FPS/Animators/Pistol.controller
+  uploadId: 991874
