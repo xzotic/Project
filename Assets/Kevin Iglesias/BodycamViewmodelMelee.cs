@@ -3,19 +3,39 @@ using UnityEngine;
 namespace RealisticBodycam
 {
     /// <summary>
-    /// First-person melee using a rigged arms viewmodel (the Arms.fbx from the
-    /// BigAndCrispy Unity-First-Person-Melee template).
+    /// First-person melee using a rigged arms viewmodel.
+    /// One of these per melee weapon: put it on that weapon's Arms object (child of its slot
+    /// in the weapon switcher). Each weapon sets its own attack chain, speed and damage.
     ///
-    /// Put this on the Arms object (child of the "Melee" slot in the weapon switcher).
-    /// The slot is only active while melee is selected, so this script only runs then.
-    ///
-    /// The Animator Controller needs four states, named exactly as in the fields below,
-    /// with NO transitions and no parameters: Idle, Walk, Attack 1, Attack 2.
-    /// The script switches between them with CrossFade.
+    /// The Animator Controller needs the Idle and Walk states plus one state per attack
+    /// used in the chain, with NO transitions and no parameters. A state can be used by
+    /// more than one step (e.g. "Attack 1", "Attack 2", "Attack 1").
     /// </summary>
     [AddComponentMenu("Realistic Bodycam/Viewmodel Melee")]
     public class BodycamViewmodelMelee : MonoBehaviour
     {
+        [System.Serializable]
+        public class AttackStep
+        {
+            [Tooltip("Animator state played for this swing.")]
+            public string stateName = "Attack 1";
+
+            [Tooltip("1 = normal speed, 2 = twice as fast. Hit Delay and Duration scale with it automatically.")]
+            public float animationSpeed = 1f;
+
+            [Tooltip("Seconds from click to the hit landing, at normal speed (1).")]
+            public float hitDelay = 0.4f;
+
+            [Tooltip("Seconds this swing lasts before the next swing can follow, at normal speed (1).")]
+            public float duration = 1f;
+
+            [Tooltip("Multiplies the weapon's damage for this step (use e.g. 1.5 for a finisher).")]
+            public float damageMultiplier = 1f;
+
+            [Tooltip("Optional. Overrides the weapon's swing sound for this step.")]
+            public AudioClip swingSound;
+        }
+
         [Header("REFERENCES")]
         public Animator animator;
         public AudioSource audioSource;
@@ -30,28 +50,33 @@ namespace RealisticBodycam
         [Header("ANIMATOR STATE NAMES")]
         public string idleState = "Idle";
         public string walkState = "Walk";
-        public string attack1State = "Attack 1";
-        public string attack2State = "Attack 2";
         public float crossFadeTime = 0.2f;
 
         [Tooltip("Horizontal speed (m/s) above which the Walk animation plays.")]
         public float walkSpeedThreshold = 0.5f;
 
-        [Header("ATTACK")]
+        [Header("WEAPON")]
         public float damage = 40f;
         public float attackDistance = 2.5f;
 
-        [Tooltip("Radius of the hit sweep. 0.25 is forgiving; use a small value for a precise hit.")]
+        [Tooltip("Radius of the hit sweep.")]
         public float hitRadius = 0.25f;
-
-        [Tooltip("Seconds from click to the hit landing. Tune to match the swing.")]
-        public float attackDelay = 0.4f;
-
-        [Tooltip("Seconds before the next swing can start.")]
-        public float swingDuration = 1f;
 
         public bool holdToRepeat = true;
         public LayerMask hitMask = ~0;
+
+        [Header("ATTACK CHAIN (length = number of hits in the combo)")]
+        public AttackStep[] attackChain = new AttackStep[]
+        {
+            new AttackStep { stateName = "Attack 1" },
+            new AttackStep { stateName = "Attack 2" }
+        };
+
+        [Tooltip("If you wait longer than this after a swing ends, the combo restarts at step 1.")]
+        public float chainResetTime = 1f;
+
+        [Tooltip("Extra pause after the LAST swing of the chain before a new chain can start.")]
+        public float chainEndRecovery = 0f;
 
         [Header("EFFECTS")]
         public AudioClip swingSound;
@@ -62,13 +87,16 @@ namespace RealisticBodycam
         public GameObject hitEffectPrefab;
         public float hitEffectLifetime = 5f;
 
-        int idleHash, walkHash, attack1Hash, attack2Hash;
+        int idleHash, walkHash;
+        int[] stepHashes;
         int currentHash;
 
-        float nextAttackTime;
+        int comboIndex;
+        float nextAttackTime;     // when a new swing may start
+        float swingEndTime;       // when the current swing animation is over
         float hitTime;
+        float pendingDamage;
         bool hitPending;
-        int attackCount;
 
         Vector3 lastPlayerPosition;
 
@@ -82,25 +110,31 @@ namespace RealisticBodycam
 
             if (playerCamera == null)
                 playerCamera = Camera.main;
-
-            idleHash = Animator.StringToHash(idleState);
-            walkHash = Animator.StringToHash(walkState);
-            attack1Hash = Animator.StringToHash(attack1State);
-            attack2Hash = Animator.StringToHash(attack2State);
         }
 
-        // Called every time the Melee slot is selected (the slot is activated).
+        // Called every time this weapon's slot is selected (the slot is activated).
         void OnEnable()
         {
+            idleHash = Animator.StringToHash(idleState);
+            walkHash = Animator.StringToHash(walkState);
+
+            int count = attackChain != null ? attackChain.Length : 0;
+            stepHashes = new int[count];
+
+            for (int i = 0; i < count; i++)
+                stepHashes[i] = Animator.StringToHash(attackChain[i].stateName);
+
             hitPending = false;
+            comboIndex = 0;
             nextAttackTime = 0f;
-            currentHash = 0;
+            swingEndTime = 0f;
 
             if (playerRoot != null)
                 lastPlayerPosition = playerRoot.position;
 
             if (animator != null)
             {
+                animator.speed = 1f;
                 animator.Play(idleHash, 0, 0f);
                 currentHash = idleHash;
             }
@@ -141,36 +175,63 @@ namespace RealisticBodycam
                 DoHit();
             }
 
-            // Idle / Walk, unless a swing is still playing.
-            if (Time.time >= nextAttackTime)
+            // Back to Idle / Walk once the swing animation is finished.
+            if (Time.time >= swingEndTime)
                 ChangeState(speed > walkSpeedThreshold ? walkHash : idleHash);
         }
 
         void Attack()
         {
-            if (Time.time < nextAttackTime)
+            if (Time.time < nextAttackTime || stepHashes == null || stepHashes.Length == 0)
                 return;
 
-            nextAttackTime = Time.time + swingDuration;
-            hitTime = Time.time + attackDelay;
+            // Combo restarts if the player waited too long since the last swing ended.
+            if (Time.time > swingEndTime + chainResetTime)
+                comboIndex = 0;
+
+            AttackStep step = attackChain[comboIndex];
+            float speed = Mathf.Max(0.05f, step.animationSpeed);
+
+            pendingDamage = damage * step.damageMultiplier;
+            hitTime = Time.time + step.hitDelay / speed;
             hitPending = true;
 
-            if (audioSource != null && swingSound != null)
+            swingEndTime = Time.time + step.duration / speed;
+            nextAttackTime = swingEndTime;
+
+            AudioClip clip = step.swingSound != null ? step.swingSound : swingSound;
+
+            if (audioSource != null && clip != null)
             {
                 audioSource.pitch = Random.Range(swingPitchRange.x, swingPitchRange.y);
-                audioSource.PlayOneShot(swingSound);
+                audioSource.PlayOneShot(clip);
             }
 
-            ChangeState(attackCount == 0 ? attack1Hash : attack2Hash);
-            attackCount = 1 - attackCount;
+            // Always restart the swing animation, even if the same state is used twice in a row.
+            if (animator != null)
+            {
+                animator.speed = speed;
+                currentHash = stepHashes[comboIndex];
+                animator.CrossFadeInFixedTime(currentHash, crossFadeTime, 0, 0f);
+            }
+
+            comboIndex++;
+
+            if (comboIndex >= attackChain.Length)
+            {
+                comboIndex = 0;
+                nextAttackTime += chainEndRecovery;
+            }
         }
 
+        // Used for Idle and Walk only.
         void ChangeState(int stateHash)
         {
             if (animator == null || currentHash == stateHash)
                 return;
 
             currentHash = stateHash;
+            animator.speed = 1f;
             animator.CrossFadeInFixedTime(stateHash, crossFadeTime);
         }
 
@@ -208,7 +269,7 @@ namespace RealisticBodycam
 
             if (respawning != null)
             {
-                respawning.TakeDamage(damage);
+                respawning.TakeDamage(pendingDamage);
                 return;
             }
 
@@ -217,13 +278,13 @@ namespace RealisticBodycam
 
             if (target != null)
             {
-                target.TakeDamage(damage);
+                target.TakeDamage(pendingDamage);
             }
             else
             {
                 hit.transform.SendMessageUpwards(
                     "TakeDamage",
-                    damage,
+                    pendingDamage,
                     SendMessageOptions.DontRequireReceiver
                 );
             }

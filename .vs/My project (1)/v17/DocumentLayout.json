@@ -3,7 +3,11 @@
   "WorkspaceRootPath": "D:\\Games\\Unity\\My project (1)\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{E1CE1FEE-67BE-6533-73AA-CC578BE80DCD}|Assembly-CSharp.csproj|D:\\Games\\Unity\\My project (1)\\assets\\bodycam fps\\scripts\\bodycamweaponmotion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{E1CE1FEE-67BE-6533-73AA-CC578BE80DCD}|Assembly-CSharp.csproj|d:\\games\\unity\\my project (1)\\assets\\kevin iglesias\\bodycamviewmodelmelee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E1CE1FEE-67BE-6533-73AA-CC578BE80DCD}|Assembly-CSharp.csproj|solutionrelative:assets\\kevin iglesias\\bodycamviewmodelmelee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1CE1FEE-67BE-6533-73AA-CC578BE80DCD}|Assembly-CSharp.csproj|d:\\games\\unity\\my project (1)\\assets\\bodycam fps\\scripts\\bodycamweaponmotion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E1CE1FEE-67BE-6533-73AA-CC578BE80DCD}|Assembly-CSharp.csproj|solutionrelative:assets\\bodycam fps\\scripts\\bodycamweaponmotion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -11,7 +15,7 @@
       "RelativeMoniker": "D:0:0:{E1CE1FEE-67BE-6533-73AA-CC578BE80DCD}|Assembly-CSharp.csproj|solutionrelative:assets\\bodycam fps\\scripts\\bodycamfpscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E1CE1FEE-67BE-6533-73AA-CC578BE80DCD}|Assembly-CSharp.csproj|d:\\games\\unity\\my project (1)\\assets\\kevin iglesias\\bodycambodyvisibility.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{E1CE1FEE-67BE-6533-73AA-CC578BE80DCD}|Assembly-CSharp.csproj|D:\\Games\\Unity\\My project (1)\\assets\\kevin iglesias\\bodycambodyvisibility.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E1CE1FEE-67BE-6533-73AA-CC578BE80DCD}|Assembly-CSharp.csproj|solutionrelative:assets\\kevin iglesias\\bodycambodyvisibility.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -26,11 +30,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
+              "Title": "BodycamViewmodelMelee.cs",
+              "DocumentMoniker": "D:\\Games\\Unity\\My project (1)\\Assets\\Kevin Iglesias\\BodycamViewmodelMelee.cs",
+              "RelativeDocumentMoniker": "Assets\\Kevin Iglesias\\BodycamViewmodelMelee.cs",
+              "ToolTip": "D:\\Games\\Unity\\My project (1)\\Assets\\Kevin Iglesias\\BodycamViewmodelMelee.cs",
+              "RelativeToolTip": "Assets\\Kevin Iglesias\\BodycamViewmodelMelee.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAACQBAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-28T15:09:27.283Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "BodycamBodyVisibility.cs",
               "DocumentMoniker": "D:\\Games\\Unity\\My project (1)\\Assets\\Kevin Iglesias\\BodycamBodyVisibility.cs",
               "RelativeDocumentMoniker": "Assets\\Kevin Iglesias\\BodycamBodyVisibility.cs",
@@ -38,12 +55,11 @@
               "RelativeToolTip": "Assets\\Kevin Iglesias\\BodycamBodyVisibility.cs",
               "ViewState": "AgIAABEAAAAAAAAAAAAQwHsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-25T17:15:24.353Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-25T17:15:24.353Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "BodyAnimatorDriver.cs",
               "DocumentMoniker": "D:\\Games\\Unity\\My project (1)\\Assets\\Kevin Iglesias\\BodyAnimatorDriver.cs",
               "RelativeDocumentMoniker": "Assets\\Kevin Iglesias\\BodyAnimatorDriver.cs",
@@ -55,20 +71,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "BodycamWeaponMotion.cs",
               "DocumentMoniker": "D:\\Games\\Unity\\My project (1)\\Assets\\BodyCam FPS\\Scripts\\BodycamWeaponMotion.cs",
               "RelativeDocumentMoniker": "Assets\\BodyCam FPS\\Scripts\\BodycamWeaponMotion.cs",
-              "ToolTip": "D:\\Games\\Unity\\My project (1)\\Assets\\BodyCam FPS\\Scripts\\BodycamWeaponMotion.cs*",
-              "RelativeToolTip": "Assets\\BodyCam FPS\\Scripts\\BodycamWeaponMotion.cs*",
-              "ViewState": "AgIAAFsAAAAAAAAAAAAQwHAAAAAAAAAAAAAAAA==",
+              "ToolTip": "D:\\Games\\Unity\\My project (1)\\Assets\\BodyCam FPS\\Scripts\\BodycamWeaponMotion.cs",
+              "RelativeToolTip": "Assets\\BodyCam FPS\\Scripts\\BodycamWeaponMotion.cs",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAQwHEAAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-10-25T12:27:14.105Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "BodycamFPSController.cs",
               "DocumentMoniker": "D:\\Games\\Unity\\My project (1)\\Assets\\BodyCam FPS\\Scripts\\BodycamFPSController.cs",
               "RelativeDocumentMoniker": "Assets\\BodyCam FPS\\Scripts\\BodycamFPSController.cs",
@@ -76,8 +92,7 @@
               "RelativeToolTip": "Assets\\BodyCam FPS\\Scripts\\BodycamFPSController.cs",
               "ViewState": "AgIAAJ8AAAAAAAAAAAArwDkAAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-25T12:09:03.011Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-25T12:09:03.011Z"
             }
           ]
         }
