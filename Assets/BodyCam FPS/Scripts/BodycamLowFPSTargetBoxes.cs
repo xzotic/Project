@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RealisticBodycam
+namespace PurgeFPS
 {
     [AddComponentMenu("Realistic Bodycam/Low FPS Target Boxes")]
     public class BodycamLowFPSTargetBoxes : MonoBehaviour

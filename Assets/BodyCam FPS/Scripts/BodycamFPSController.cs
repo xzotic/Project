@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace RealisticBodycam
+namespace PurgeFPS
 {
     [AddComponentMenu("Realistic Bodycam/Bodycam FPS Controller")]
     [RequireComponent(typeof(CharacterController))]
@@ -38,6 +38,20 @@ namespace RealisticBodycam
         public float walkSpeed = 3.2f;
         public float runSpeed = 5.8f;
         public float movementSmoothness = 0.18f;
+
+        [Header("STAMINA")]
+        BodycamStamina stamina;
+        bool staminaSearched;
+
+        BodycamStamina GetStamina()
+        {
+            if (!staminaSearched)
+            {
+                stamina = GetComponent<BodycamStamina>();
+                staminaSearched = true;
+            }
+            return stamina;
+        }
 
         [Header("MOUSE LOOK")]
         public float mouseSensitivity = 140f;
@@ -139,6 +153,8 @@ namespace RealisticBodycam
 
         float xRotation;
         float currentRoll;
+        [HideInInspector] public float externalRoll;
+        [HideInInspector] public float externalPitch;
         Vector3 currentTurnInertia;
         Vector3 currentStepRotation;
 
@@ -302,11 +318,11 @@ namespace RealisticBodycam
 
             Quaternion baseCameraRotation = Quaternion.Slerp(
                 unshakenCameraRotation,
-                Quaternion.Euler(
-                    xRotation + currentTurnInertia.x + currentStepRotation.x,
-                    freeLookYaw + currentTurnInertia.y,
-                    currentRoll + currentMovementLean + currentTurnInertia.z + currentStepRotation.z
-                ),
+                    Quaternion.Euler(
+                        xRotation + currentTurnInertia.x + currentStepRotation.x + externalPitch,
+                        freeLookYaw + currentTurnInertia.y,
+                        currentRoll + currentMovementLean + currentTurnInertia.z + currentStepRotation.z + externalRoll
+                    ),
                 Time.deltaTime * cameraRotationSmoothness
             );
 
@@ -386,7 +402,8 @@ namespace RealisticBodycam
             float x = Input.GetAxisRaw("Horizontal");
             float z = Input.GetAxisRaw("Vertical");
 
-            bool running = Input.GetKey(KeyCode.LeftShift) && z > 0.1f;
+            bool running = Input.GetKey(KeyCode.LeftShift) && z > 0.1f
+               && (GetStamina() == null || GetStamina().CanRun);
             float speed = running ? runSpeed : walkSpeed;
 
             Vector3 move = (transform.right * x + transform.forward * z).normalized * speed;
@@ -400,7 +417,8 @@ namespace RealisticBodycam
 
             controller.Move(currentMove * Time.deltaTime);
 
-            if (Input.GetButtonDown("Jump") && isGrounded)
+            if (Input.GetButtonDown("Jump") && isGrounded
+                && (GetStamina() == null || GetStamina().TryConsume(GetStamina().jumpCost)))
                 velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
 
             velocity.y += gravity * Time.deltaTime;

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace RealisticBodycam
+namespace PurgeFPS
 {
     [AddComponentMenu("Realistic Bodycam/Stamina Breathing Audio")]
     public class BodycamStaminaBreathingAudio : MonoBehaviour

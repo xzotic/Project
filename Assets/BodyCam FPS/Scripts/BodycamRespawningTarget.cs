@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace RealisticBodycam
+namespace PurgeFPS
 {
     [AddComponentMenu("Realistic Bodycam/Respawning Target")]
     public class BodycamRespawningTarget : MonoBehaviour

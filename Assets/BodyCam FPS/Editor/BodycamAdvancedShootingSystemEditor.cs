@@ -1,6 +1,6 @@
 using UnityEditor;
 
-namespace RealisticBodycam.Editor
+namespace PurgeFPS.Editor
 {
     [CustomEditor(typeof(BodycamAdvancedShootingSystem))]
     [CanEditMultipleObjects]

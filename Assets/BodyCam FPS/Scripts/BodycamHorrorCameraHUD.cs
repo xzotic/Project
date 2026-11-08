@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace RealisticBodycam
+namespace PurgeFPS
 {
     [AddComponentMenu("Realistic Bodycam/Horror Camera HUD")]
     public class BodycamHorrorCameraHUD : MonoBehaviour

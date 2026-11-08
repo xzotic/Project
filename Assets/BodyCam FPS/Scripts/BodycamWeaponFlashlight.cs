@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace RealisticBodycam
+namespace PurgeFPS
 {
     [AddComponentMenu("Realistic Bodycam/Weapon Flashlight")]
     [DisallowMultipleComponent]

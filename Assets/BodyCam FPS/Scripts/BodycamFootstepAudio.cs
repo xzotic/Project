@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace RealisticBodycam
+namespace PurgeFPS
 {
     [AddComponentMenu("Realistic Bodycam/Footstep Audio Advanced")]
     [RequireComponent(typeof(AudioSource))]

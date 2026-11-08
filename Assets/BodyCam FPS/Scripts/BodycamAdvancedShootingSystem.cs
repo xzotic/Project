@@ -1,7 +1,8 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-namespace RealisticBodycam
+namespace PurgeFPS
 {
     [AddComponentMenu("Realistic Bodycam/Advanced Shooting System")]
     public class BodycamAdvancedShootingSystem : MonoBehaviour
@@ -16,6 +17,12 @@ namespace RealisticBodycam
         public Camera playerCamera;
         public Transform weaponTransform;
         public Animator weaponAnimator;
+
+        [Tooltip("Optional second animator (for example the gun, when the arms and gun are separate rigs). " +
+                 "It gets the same idle, fire and reload commands as the Weapon Animator. " +
+                 "Its controller needs the same state names and trigger names.")]
+        public Animator gunAnimator;
+
         public BodycamFPSController bodycamController;
 
         [Header("WEAPON ANIMATIONS")]
@@ -81,6 +88,73 @@ namespace RealisticBodycam
         public float bulletDamage = 25f;
 
         public bool bulletUseGravity = false;
+
+        [Header("HITSCAN (used when Use Physical Bullet is off)")]
+        [Tooltip("Spawned where a shot hits. A Particle System or VFX Graph prefab with Play On Awake enabled. " +
+                 "Its forward (blue) axis points away from the surface. Damage uses Bullet Damage.")]
+        public GameObject impactEffect;
+
+        [Min(1)]
+        [Tooltip("How many impact effects are reused in turn (avoids creating a new object per hit).")]
+        public int impactPoolSize = 8;
+
+        [Min(1)]
+        [Tooltip("Rays fired per shot. Use e.g. 8 for the shotgun. Each ray deals Bullet Damage.")]
+        public int pelletsPerShot = 1;
+
+        [Min(0f)]
+        [Tooltip("Random spread cone in degrees (half angle). 0 = perfectly accurate.")]
+        public float spreadAngle = 0f;
+
+        [Min(0f)]
+        [Tooltip("Impulse applied to rigid bodies that are hit. 0 = none.")]
+        public float hitForce = 0f;
+
+        [Header("TRACERS (hitscan)")]
+        public bool showTracers = true;
+
+        [Tooltip("Optional. Leave empty for a simple built-in unlit material. Use e.g. an additive particle material for a glow.")]
+        public Material tracerMaterial;
+
+        public Color tracerColor = new Color(1f, 0.85f, 0.45f, 1f);
+
+        [Min(0.001f)]
+        public float tracerWidth = 0.02f;
+
+        [Min(0.1f)]
+        [Tooltip("Length of the streak in metres.")]
+        public float tracerLength = 3f;
+
+        [Min(1f)]
+        [Tooltip("Speed of the streak in metres per second.")]
+        public float tracerSpeed = 300f;
+
+        [Range(0f, 1f)]
+        [Tooltip("Chance that a shot (or pellet) shows a tracer. 1 = every shot, 0.33 = about every third.")]
+        public float tracerChance = 1f;
+
+        [Min(1)]
+        [Tooltip("Most tracers visible at once. If more are fired, the extra ones are skipped.")]
+        public int maxTracers = 32;
+
+        [Header("BULLET HOLES (hitscan)")]
+        [Tooltip("A flat Quad (or URP Decal Projector) with a bullet hole material. It must have NO collider. " +
+                 "Placed on the surface that was hit, facing out of it.")]
+        public GameObject bulletHolePrefab;
+
+        [Min(1)]
+        [Tooltip("How many holes exist at once. The oldest hole is reused when the limit is reached. " +
+                 "A shotgun fires several rays per shot, so give it a larger number.")]
+        public int bulletHolePoolSize = 24;
+
+        [Tooltip("Distance the hole is lifted off the surface, to stop it flickering into the wall.")]
+        public float bulletHoleSurfaceOffset = 0.005f;
+
+        [Tooltip("Random size multiplier (min, max) applied to the prefab's scale.")]
+        public Vector2 bulletHoleSizeRange = new Vector2(0.9f, 1.15f);
+
+        [Tooltip("Holes on targets and rigid bodies follow the object when it moves.")]
+        public bool bulletHolesFollowMovingObjects = true;
 
         [Header("AMMUNITION & RELOAD")]
         public bool useAmmoSystem = true;
@@ -186,6 +260,8 @@ namespace RealisticBodycam
             if (weaponAnimator == null)
                 weaponAnimator = GetComponentInChildren<Animator>();
 
+            CacheGunAnimatorParameters();
+
             if (bodycamController == null)
                 bodycamController = GetComponentInParent<BodycamFPSController>();
 
@@ -266,7 +342,19 @@ namespace RealisticBodycam
 
             if (!usePhysicalBullet || bulletPrefab == null)
             {
-                Physics.Raycast(shotRay, out _, range, hitMask);
+                for (int i = 0; i < pelletsPerShot; i++)
+                {
+                    Vector3 pelletDirection = SpreadDirection(shotDirection, spreadAngle);
+                    Ray pelletRay = new Ray(rayOrigin, pelletDirection);
+
+                    bool didHit = TryHitscan(pelletRay, out RaycastHit hit);
+
+                    if (didHit)
+                        ApplyHitscan(hit, pelletDirection);
+
+                    SpawnTracer(spawnPosition, didHit ? hit.point : rayOrigin + pelletDirection * range);
+                }
+
                 return;
             }
 
@@ -292,29 +380,377 @@ namespace RealisticBodycam
             );
         }
 
+        // ---------------- hitscan ----------------
+
+        static readonly RaycastHit[] hitBuffer = new RaycastHit[16];
+
+        GameObject[] impactPool;
+        int impactPoolIndex;
+
+        static Vector3 SpreadDirection(Vector3 direction, float angle)
+        {
+            if (angle <= 0f)
+                return direction;
+
+            Vector3 right = Vector3.Cross(direction, Vector3.up);
+
+            if (right.sqrMagnitude < 0.0001f)
+                right = Vector3.right;
+
+            right.Normalize();
+            Vector3 up = Vector3.Cross(right, direction).normalized;
+
+            Vector2 offset = Random.insideUnitCircle * Mathf.Tan(angle * Mathf.Deg2Rad);
+
+            return (direction + right * offset.x + up * offset.y).normalized;
+        }
+
+        // Nearest hit that is not part of the player itself (allocation free).
+        bool TryHitscan(Ray ray, out RaycastHit result)
+        {
+            int count = Physics.RaycastNonAlloc(
+                ray,
+                hitBuffer,
+                range,
+                hitMask,
+                QueryTriggerInteraction.Ignore
+            );
+
+            Transform owner = transform.root;
+            float nearest = float.MaxValue;
+            bool found = false;
+            result = default;
+
+            for (int i = 0; i < count; i++)
+            {
+                RaycastHit candidate = hitBuffer[i];
+
+                if (candidate.collider.transform.IsChildOf(owner))
+                    continue;
+
+                if (candidate.distance < nearest)
+                {
+                    nearest = candidate.distance;
+                    result = candidate;
+                    found = true;
+                }
+            }
+
+            return found;
+        }
+
+        void ApplyHitscan(RaycastHit hit, Vector3 direction)
+        {
+            Transform hitTransform = hit.collider.transform;
+
+            BodycamRespawningTarget respawningTarget =
+                hitTransform.GetComponentInParent<BodycamRespawningTarget>();
+
+            if (respawningTarget != null)
+            {
+                respawningTarget.TakeDamage(bulletDamage);
+            }
+            else
+            {
+                BodycamShootableTarget shootableTarget =
+                    hitTransform.GetComponentInParent<BodycamShootableTarget>();
+
+                if (shootableTarget != null)
+                {
+                    shootableTarget.TakeDamage(bulletDamage);
+                }
+                else
+                {
+                    hitTransform.SendMessageUpwards(
+                        "TakeDamage",
+                        bulletDamage,
+                        SendMessageOptions.DontRequireReceiver
+                    );
+                }
+            }
+
+            if (hitForce > 0f && hit.rigidbody != null)
+                hit.rigidbody.AddForceAtPosition(direction * hitForce, hit.point, ForceMode.Impulse);
+
+            SpawnImpactEffect(hit.point, hit.normal);
+            SpawnBulletHole(hit);
+        }
+
+        // Reuses a small pool of impact objects: restarting an object by disabling and enabling
+        // it replays its Particle System or VFX Graph without creating garbage.
+        void SpawnImpactEffect(Vector3 point, Vector3 normal)
+        {
+            if (impactEffect == null)
+                return;
+
+            if (impactPool == null || impactPool.Length != impactPoolSize)
+            {
+                impactPool = new GameObject[impactPoolSize];
+                impactPoolIndex = 0;
+            }
+
+            GameObject effect = impactPool[impactPoolIndex];
+
+            if (effect == null)
+            {
+                effect = Instantiate(impactEffect);
+                impactPool[impactPoolIndex] = effect;
+            }
+
+            impactPoolIndex = (impactPoolIndex + 1) % impactPool.Length;
+
+            effect.SetActive(false);
+            effect.transform.SetPositionAndRotation(
+                point + normal * 0.01f,
+                Quaternion.LookRotation(normal)
+            );
+            effect.SetActive(true);
+        }
+
+        // ---------------- tracers ----------------
+        // One particle system per gun draws every tracer as a stretched streak. Nothing is
+        // created per shot: each tracer is just one emitted particle.
+
+        ParticleSystem tracerSystem;
+        ParticleSystemRenderer tracerRenderer;
+        float tracerShownLength = -1f;
+        float tracerShownSpeed = -1f;
+        static Material tracerDefaultMaterial;
+
+        void SpawnTracer(Vector3 from, Vector3 to)
+        {
+            if (!showTracers)
+                return;
+
+            if (tracerChance < 1f && Random.value > tracerChance)
+                return;
+
+            Vector3 delta = to - from;
+            float distance = delta.magnitude;
+
+            if (distance < 0.5f)
+                return;
+
+            EnsureTracerSystem();
+
+            if (tracerSystem == null)
+                return;
+
+            float speed = Mathf.Max(1f, tracerSpeed);
+            float length = Mathf.Max(0.1f, tracerLength);
+
+            // Streak length = particle speed x velocity scale, so it only needs updating when these change.
+            if (!Mathf.Approximately(length, tracerShownLength) || !Mathf.Approximately(speed, tracerShownSpeed))
+            {
+                tracerShownLength = length;
+                tracerShownSpeed = speed;
+                tracerRenderer.velocityScale = length / speed;
+            }
+
+            Vector3 direction = delta / distance;
+
+            // The streak trails behind the particle, so start it one streak-length ahead of the muzzle.
+            float startOffset = Mathf.Min(length, distance * 0.5f);
+
+            ParticleSystem.EmitParams emit = new ParticleSystem.EmitParams();
+            emit.position = from + direction * startOffset;
+            emit.velocity = direction * speed;
+            emit.startLifetime = (distance - startOffset) / speed;
+            emit.startSize = tracerWidth;
+            emit.startColor = tracerColor;
+
+            tracerSystem.Emit(emit, 1);
+        }
+
+        // Builds the tracer particle system once (and again if the scene was reloaded).
+        void EnsureTracerSystem()
+        {
+            if (tracerSystem != null)
+                return;
+
+            GameObject tracerObject = new GameObject("GunTracers");
+            tracerSystem = tracerObject.AddComponent<ParticleSystem>();
+            tracerSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+
+            ParticleSystem.MainModule main = tracerSystem.main;
+            main.loop = true;
+            main.playOnAwake = false;
+            main.simulationSpace = ParticleSystemSimulationSpace.World;
+            main.maxParticles = Mathf.Max(1, maxTracers);
+            main.gravityModifier = 0f;
+            main.startSpeed = 0f;
+
+            ParticleSystem.EmissionModule emission = tracerSystem.emission;
+            emission.enabled = false;
+
+            ParticleSystem.ShapeModule shape = tracerSystem.shape;
+            shape.enabled = false;
+
+            tracerRenderer = tracerObject.GetComponent<ParticleSystemRenderer>();
+            tracerRenderer.renderMode = ParticleSystemRenderMode.Stretch;
+            tracerRenderer.lengthScale = 1f;
+            tracerRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            tracerRenderer.receiveShadows = false;
+            tracerRenderer.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
+            tracerRenderer.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.Off;
+            tracerRenderer.sharedMaterial = tracerMaterial != null ? tracerMaterial : GetTracerDefaultMaterial();
+
+            tracerShownLength = -1f;
+            tracerShownSpeed = -1f;
+
+            tracerSystem.Play();
+        }
+
+        static Material GetTracerDefaultMaterial()
+        {
+            if (tracerDefaultMaterial == null)
+            {
+                // Sprites/Default uses the particle colour. It is always available.
+                Shader shader = Shader.Find("Sprites/Default");
+
+                if (shader == null)
+                    shader = Shader.Find("Universal Render Pipeline/Particles/Unlit");
+
+                if (shader == null)
+                    return null;
+
+                tracerDefaultMaterial = new Material(shader) { name = "Gun Tracer (auto)" };
+            }
+
+            return tracerDefaultMaterial;
+        }
+
+        GameObject[] bulletHolePool;
+        int bulletHoleIndex;
+
+        // Reuses a ring of hole objects (no garbage per shot). The oldest hole is moved to the new spot.
+        void SpawnBulletHole(RaycastHit hit)
+        {
+            if (bulletHolePrefab == null)
+                return;
+
+            if (bulletHolePool == null || bulletHolePool.Length != bulletHolePoolSize)
+            {
+                bulletHolePool = new GameObject[bulletHolePoolSize];
+                bulletHoleIndex = 0;
+            }
+
+            GameObject hole = bulletHolePool[bulletHoleIndex];
+
+            if (hole == null)
+            {
+                hole = Instantiate(bulletHolePrefab);
+                bulletHolePool[bulletHoleIndex] = hole;
+            }
+
+            bulletHoleIndex = (bulletHoleIndex + 1) % bulletHolePool.Length;
+
+            Transform holeTransform = hole.transform;
+            holeTransform.SetParent(null);   // release it from the object it was stuck to before
+
+            // The prefab's forward (blue) axis points INTO the surface; a Quad then faces out of it.
+            // A random spin around the surface normal makes the holes look different.
+            Vector3 normal = hit.normal;
+            Quaternion rotation = Quaternion.LookRotation(-normal)
+                                  * Quaternion.Euler(0f, 0f, Random.Range(0f, 360f));
+
+            holeTransform.SetPositionAndRotation(
+                hit.point + normal * bulletHoleSurfaceOffset,
+                rotation
+            );
+
+            holeTransform.localScale = bulletHolePrefab.transform.localScale
+                                       * Random.Range(bulletHoleSizeRange.x, bulletHoleSizeRange.y);
+
+            if (bulletHolesFollowMovingObjects)
+            {
+                Transform surface = hit.collider.transform;
+
+                bool moving = hit.rigidbody != null
+                              || surface.GetComponentInParent<BodycamShootableTarget>() != null
+                              || surface.GetComponentInParent<BodycamRespawningTarget>() != null;
+
+                if (moving)
+                    holeTransform.SetParent(surface, true);
+            }
+
+            hole.SetActive(true);
+        }
+
+        // ---------------- animators (the Weapon Animator and the optional Gun Animator) ----------------
+
+        HashSet<string> gunParameterNames;
+
+        // Remembers which parameters the gun's controller has, so missing ones never log warnings.
+        void CacheGunAnimatorParameters()
+        {
+            // The same animator assigned to both fields would receive every command twice.
+            if (gunAnimator == weaponAnimator)
+                gunAnimator = null;
+
+            if (gunAnimator == null || gunAnimator.runtimeAnimatorController == null)
+                return;
+
+            gunParameterNames = new HashSet<string>();
+
+            foreach (AnimatorControllerParameter parameter in gunAnimator.parameters)
+                gunParameterNames.Add(parameter.name);
+        }
+
+        // The Weapon Animator is used as before. The Gun Animator is only used for parameters its controller has.
+        bool HasParameter(Animator animator, string parameterName)
+        {
+            if (animator != gunAnimator)
+                return true;
+
+            return gunParameterNames != null && gunParameterNames.Contains(parameterName);
+        }
+
+        void SetTriggerSafe(Animator animator, string triggerName)
+        {
+            if (animator != null && !string.IsNullOrEmpty(triggerName) && HasParameter(animator, triggerName))
+                animator.SetTrigger(triggerName);
+        }
+
+        void ResetTriggerSafe(Animator animator, string triggerName)
+        {
+            if (animator != null && !string.IsNullOrEmpty(triggerName) && HasParameter(animator, triggerName))
+                animator.ResetTrigger(triggerName);
+        }
+
         void PlayIdleAnimation()
         {
-            if (!playIdleOnEnable || weaponAnimator == null || string.IsNullOrEmpty(idleStateName))
+            if (!playIdleOnEnable || string.IsNullOrEmpty(idleStateName))
+                return;
+
+            PlayIdleState(weaponAnimator);
+            PlayIdleState(gunAnimator);
+        }
+
+        void PlayIdleState(Animator animator)
+        {
+            if (animator == null)
                 return;
 
             int idleStateHash = Animator.StringToHash(idleStateName);
             int baseLayerIdleHash = Animator.StringToHash("Base Layer." + idleStateName);
 
-            if (weaponAnimator.HasState(0, idleStateHash))
-                weaponAnimator.Play(idleStateHash, 0, 0f);
-            else if (weaponAnimator.HasState(0, baseLayerIdleHash))
-                weaponAnimator.Play(baseLayerIdleHash, 0, 0f);
+            if (animator.HasState(0, idleStateHash))
+                animator.Play(idleStateHash, 0, 0f);
+            else if (animator.HasState(0, baseLayerIdleHash))
+                animator.Play(baseLayerIdleHash, 0, 0f);
         }
 
         void PlayFireAnimation()
         {
-            if (weaponAnimator == null || string.IsNullOrEmpty(fireTriggerName))
+            if (string.IsNullOrEmpty(fireTriggerName))
                 return;
 
-            if (!string.IsNullOrEmpty(reloadTriggerName))
-                weaponAnimator.ResetTrigger(reloadTriggerName);
+            ResetTriggerSafe(weaponAnimator, reloadTriggerName);
+            ResetTriggerSafe(gunAnimator, reloadTriggerName);
 
-            weaponAnimator.SetTrigger(fireTriggerName);
+            SetTriggerSafe(weaponAnimator, fireTriggerName);
+            SetTriggerSafe(gunAnimator, fireTriggerName);
         }
 
         public void StartReload()
@@ -387,14 +823,17 @@ namespace RealisticBodycam
 
         void PlayReloadAnimation()
         {
-            if (weaponAnimator == null || string.IsNullOrEmpty(reloadTriggerName))
+            if (string.IsNullOrEmpty(reloadTriggerName))
                 return;
 
-            if (!string.IsNullOrEmpty(fireTriggerName))
-                weaponAnimator.ResetTrigger(fireTriggerName);
+            ResetTriggerSafe(weaponAnimator, fireTriggerName);
+            ResetTriggerSafe(gunAnimator, fireTriggerName);
 
-            weaponAnimator.ResetTrigger(reloadTriggerName);
-            weaponAnimator.SetTrigger(reloadTriggerName);
+            ResetTriggerSafe(weaponAnimator, reloadTriggerName);
+            ResetTriggerSafe(gunAnimator, reloadTriggerName);
+
+            SetTriggerSafe(weaponAnimator, reloadTriggerName);
+            SetTriggerSafe(gunAnimator, reloadTriggerName);
         }
 
         bool CanInterruptShellReload()
@@ -418,8 +857,8 @@ namespace RealisticBodycam
             if (enableReloadCameraShake && bodycamController != null)
                 bodycamController.StopCameraShake();
 
-            if (weaponAnimator != null && !string.IsNullOrEmpty(reloadTriggerName))
-                weaponAnimator.ResetTrigger(reloadTriggerName);
+            ResetTriggerSafe(weaponAnimator, reloadTriggerName);
+            ResetTriggerSafe(gunAnimator, reloadTriggerName);
         }
 
         void FlashMuzzleLight()
@@ -454,19 +893,15 @@ namespace RealisticBodycam
             muzzleLightRoutine = null;
             CancelReload();
 
-            if (weaponAnimator != null)
-            {
-                if (!string.IsNullOrEmpty(fireTriggerName))
-                    weaponAnimator.ResetTrigger(fireTriggerName);
-
-                if (!string.IsNullOrEmpty(reloadTriggerName))
-                    weaponAnimator.ResetTrigger(reloadTriggerName);
-            }
+            ResetTriggerSafe(weaponAnimator, fireTriggerName);
+            ResetTriggerSafe(weaponAnimator, reloadTriggerName);
+            ResetTriggerSafe(gunAnimator, fireTriggerName);
+            ResetTriggerSafe(gunAnimator, reloadTriggerName);
         }
 
         void OnEnable()
         {
-            if (weaponAnimator != null)
+            if (weaponAnimator != null || gunAnimator != null)
                 PlayIdleAnimation();
         }
 

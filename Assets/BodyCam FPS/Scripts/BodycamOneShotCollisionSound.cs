@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace RealisticBodycam
+namespace PurgeFPS
 {
     [AddComponentMenu("Realistic Bodycam/One Time Collision Sound")]
     public class BodycamOneShotCollisionSound : MonoBehaviour

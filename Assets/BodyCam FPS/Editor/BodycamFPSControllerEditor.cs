@@ -1,8 +1,8 @@
 ﻿using UnityEditor;
 using UnityEngine;
-using RealisticBodycam;
+using PurgeFPS;
 
-namespace RealisticBodycam.EditorTools
+namespace PurgeFPS.EditorTools
 {
     [CustomEditor(typeof(BodycamFPSController))]
     public class BodycamFPSControllerEditor : UnityEditor.Editor
