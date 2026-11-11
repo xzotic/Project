@@ -20,7 +20,7 @@ namespace PurgeFPS
         private float frameInterval;
         private bool wasAnimatingOnTwos;
 
-        void Awake()
+        void OnEnable()
         {
             UpdateModeSettings();
         }

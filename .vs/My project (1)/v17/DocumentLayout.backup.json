@@ -23,10 +23,6 @@
       "RelativeMoniker": "D:0:0:{D639510A-B7C0-C64D-F6AD-66CC4ECACC64}|Assembly-CSharp-Editor.csproj|solutionrelative:assets\\bodycam fps\\editor\\bodycamfpscontrollereditor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E1CE1FEE-67BE-6533-73AA-CC578BE80DCD}|Assembly-CSharp.csproj|D:\\Games\\Unity\\My project (1)\\assets\\advancedroguelikeandpuzzlesystem\\scripts\\reflectorscript.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E1CE1FEE-67BE-6533-73AA-CC578BE80DCD}|Assembly-CSharp.csproj|solutionrelative:assets\\advancedroguelikeandpuzzlesystem\\scripts\\reflectorscript.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{E1CE1FEE-67BE-6533-73AA-CC578BE80DCD}|Assembly-CSharp.csproj|D:\\Games\\Unity\\My project (1)\\assets\\bodycam fps\\scripts\\bodycamdodge.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E1CE1FEE-67BE-6533-73AA-CC578BE80DCD}|Assembly-CSharp.csproj|solutionrelative:assets\\bodycam fps\\scripts\\bodycamdodge.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -53,6 +49,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Games\\Unity\\My project (1)\\Assets\\Kevin Iglesias\\BodyAnimatorDriver.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Kevin Iglesias\\BodyAnimatorDriver.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Games\\Unity\\My project (1)\\assets\\advancedroguelikeandpuzzlesystem\\scripts\\reflectorscript.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:assets\\advancedroguelikeandpuzzlesystem\\scripts\\reflectorscript.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -87,8 +87,7 @@
               "RelativeToolTip": "Assets\\FPS VIewport\\SteppedAnimator.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACEAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-07T21:36:34.139Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-11-07T21:36:34.139Z"
             },
             {
               "$type": "Document",
@@ -128,7 +127,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 12,
               "Title": "ReflectorScript.cs",
               "DocumentMoniker": "D:\\Games\\Unity\\My project (1)\\Assets\\AdvancedRogueLikeandPuzzleSystem\\Scripts\\ReflectorScript.cs",
               "RelativeDocumentMoniker": "Assets\\AdvancedRogueLikeandPuzzleSystem\\Scripts\\ReflectorScript.cs",
@@ -140,7 +139,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 6,
               "Title": "BodycamStamina.cs",
               "DocumentMoniker": "D:\\Games\\Unity\\My project (1)\\Assets\\BodyCam FPS\\Scripts\\BodycamStamina.cs",
               "RelativeDocumentMoniker": "Assets\\BodyCam FPS\\Scripts\\BodycamStamina.cs",
@@ -152,7 +151,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 5,
               "Title": "BodycamDodge.cs",
               "DocumentMoniker": "D:\\Games\\Unity\\My project (1)\\Assets\\BodyCam FPS\\Scripts\\BodycamDodge.cs",
               "RelativeDocumentMoniker": "Assets\\BodyCam FPS\\Scripts\\BodycamDodge.cs",
@@ -164,7 +163,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 9,
               "Title": "BodycamViewmodelMelee.cs",
               "DocumentMoniker": "D:\\Games\\Unity\\My project (1)\\Assets\\Kevin Iglesias\\BodycamViewmodelMelee.cs",
               "RelativeDocumentMoniker": "Assets\\Kevin Iglesias\\BodycamViewmodelMelee.cs",
@@ -176,7 +175,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 10,
               "Title": "BodycamBodyVisibility.cs",
               "DocumentMoniker": "D:\\Games\\Unity\\My project (1)\\Assets\\Kevin Iglesias\\BodycamBodyVisibility.cs",
               "RelativeDocumentMoniker": "Assets\\Kevin Iglesias\\BodycamBodyVisibility.cs",
@@ -184,12 +183,11 @@
               "RelativeToolTip": "Assets\\Kevin Iglesias\\BodycamBodyVisibility.cs",
               "ViewState": "AgIAABEAAAAAAAAAAAAQwHsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-25T17:15:24.353Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-25T17:15:24.353Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 11,
               "Title": "BodyAnimatorDriver.cs",
               "DocumentMoniker": "D:\\Games\\Unity\\My project (1)\\Assets\\Kevin Iglesias\\BodyAnimatorDriver.cs",
               "RelativeDocumentMoniker": "Assets\\Kevin Iglesias\\BodyAnimatorDriver.cs",
@@ -197,12 +195,11 @@
               "RelativeToolTip": "Assets\\Kevin Iglesias\\BodyAnimatorDriver.cs",
               "ViewState": "AgIAABsAAAAAAAAAAAAkwEgAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-25T17:12:02.169Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-25T17:12:02.169Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 8,
               "Title": "BodycamWeaponMotion.cs",
               "DocumentMoniker": "D:\\Games\\Unity\\My project (1)\\Assets\\BodyCam FPS\\Scripts\\BodycamWeaponMotion.cs",
               "RelativeDocumentMoniker": "Assets\\BodyCam FPS\\Scripts\\BodycamWeaponMotion.cs",
@@ -214,7 +211,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 7,
               "Title": "BodycamFPSController.cs",
               "DocumentMoniker": "D:\\Games\\Unity\\My project (1)\\Assets\\BodyCam FPS\\Scripts\\BodycamFPSController.cs",
               "RelativeDocumentMoniker": "Assets\\BodyCam FPS\\Scripts\\BodycamFPSController.cs",

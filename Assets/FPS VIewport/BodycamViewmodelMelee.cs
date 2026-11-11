@@ -40,7 +40,11 @@ namespace PurgeFPS
         }
 
         [Header("REFERENCES")]
+        [Tooltip("The arms animator.")]
         public Animator animator;
+
+        [Tooltip("Optional. This weapon's own animator, separate from the arms. Its controller needs the same state names (Idle, Walk and every attack state).")]
+        public Animator weaponMeshAnimator;
         public AudioSource audioSource;
         public Camera playerCamera;
 
@@ -141,12 +145,19 @@ namespace PurgeFPS
             if (playerRoot != null)
                 lastPlayerPosition = playerRoot.position;
 
-            if (animator != null)
+            ForEachAnimator(a =>
             {
-                animator.speed = 1f;
-                animator.Play(idleHash, 0, 0f);
-                currentHash = idleHash;
-            }
+                a.speed = 1f;
+                a.Play(idleHash, 0, 0f);
+            });
+            currentHash = idleHash;
+        }
+
+        // Runs an action on the arms animator and on the weapon's own animator (if assigned).
+        void ForEachAnimator(System.Action<Animator> action)
+        {
+            if (animator != null) action(animator);
+            if (weaponMeshAnimator != null) action(weaponMeshAnimator);
         }
 
         void Update()
@@ -220,12 +231,12 @@ namespace PurgeFPS
             }
 
             // Always restart the swing animation, even if the same state is used twice in a row.
-            if (animator != null)
+            currentHash = stepHashes[comboIndex];
+            ForEachAnimator(a =>
             {
-                animator.speed = speed;
-                currentHash = stepHashes[comboIndex];
-                animator.CrossFadeInFixedTime(currentHash, crossFadeTime, 0, 0f);
-            }
+                a.speed = speed;
+                a.CrossFadeInFixedTime(currentHash, crossFadeTime, 0, 0f);
+            });
 
             comboIndex++;
 
@@ -239,12 +250,15 @@ namespace PurgeFPS
         // Used for Idle and Walk only.
         void ChangeState(int stateHash)
         {
-            if (animator == null || currentHash == stateHash)
+            if (currentHash == stateHash)
                 return;
 
             currentHash = stateHash;
-            animator.speed = 1f;
-            animator.CrossFadeInFixedTime(stateHash, crossFadeTime);
+            ForEachAnimator(a =>
+            {
+                a.speed = 1f;
+                a.CrossFadeInFixedTime(stateHash, crossFadeTime);
+            });
         }
 
         void DoHit()
