@@ -66,15 +66,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\BodyCam FPS\Scripts\BodycamFootstepAudio.cs" />
+    <Compile Include="Assets\BodyCam FPS\Scripts\PlayerHitShake.cs" />
     <Compile Include="Assets\BodyCam FPS\Scripts\BodycamWeaponShootingSystem.cs" />
     <Compile Include="Assets\BodyCam FPS\Scripts\BodycamBulletHole.cs" />
+    <Compile Include="Assets\BodyCam FPS\Scripts\Enemy\EnemeHitbox.cs" />
     <Compile Include="Assets\BodyCam FPS\Scripts\RealisticFlashlight.cs" />
     <Compile Include="Assets\BodyCam FPS\Scripts\BodycamWeaponSwitcher.cs" />
     <Compile Include="Assets\FPS VIewport\BodycamBodyMelee.cs" />
     <Compile Include="Assets\BodyCam FPS\Scripts\BodycamRespawningTarget.cs" />
     <Compile Include="Assets\BodyCam FPS\Scripts\BodycamFPSController.cs" />
     <Compile Include="Assets\BodyCam FPS\Scripts\BodycamShootableTarget.cs" />
+    <Compile Include="Assets\FPS VIewport\! Viewport\Base\MuzzleFlash\FPS_PerPlatformSettings.cs" />
     <Compile Include="Assets\BodyCam FPS\Scripts\BodycamDamageSource.cs" />
+    <Compile Include="Assets\BodyCam FPS\Scripts\Enemy\SoulsEnemy.cs" />
     <Compile Include="Assets\TutorialInfo\Readme.cs" />
     <Compile Include="Assets\FPS VIewport\Human Animations\Scripts\SpineProxy.cs" />
     <Compile Include="Assets\BodyCam FPS\Scripts\BodycamPopUpTargetTrigger.cs" />
@@ -89,7 +93,6 @@
     <Compile Include="Assets\BodyCam FPS\Scripts\BodycamStamina.cs" />
     <Compile Include="Assets\BodyCam FPS\Scripts\BodycamStartupMessage.cs" />
     <Compile Include="Assets\FPS VIewport\BodycamViewmodelMelee.cs" />
-    <Compile Include="Assets\FPS VIewport\MuzzleFlash\FPS_PerPlatformSettings.cs" />
     <Compile Include="Assets\BodyCam FPS\Scripts\BodycamHorrorCameraHUD.cs" />
     <Compile Include="Assets\BodyCam FPS\Scripts\BodycamOneShotCollisionSound.cs" />
     <Compile Include="Assets\BodyCam FPS\Scripts\BodycamProjectile.cs" />
@@ -111,7 +114,7 @@
     <None Include="Assets\OddlyShapedDog\FastRetroCRTEffects\Shaders\FastCRTSimple.shader" />
     <None Include="Assets\TutorialInfo\StyleSheets\ReadmeEditor.uss" />
     <None Include="Assets\FPS VIewport\RetroDither.shader" />
-    <None Include="Assets\FPS VIewport\MuzzleFlash\AlphaBlendedAnim.shader" />
+    <None Include="Assets\FPS VIewport\! Viewport\Base\MuzzleFlash\AlphaBlendedAnim.shader" />
     <None Include="Assets\3D Assets\Stylized Fantasy Armory\Prefabs\Extra Content\Fantasy Female Character Hetalia - Props\README.txt" />
     <None Include="Assets\TutorialInfo\StyleSheets\ReadmeEditorLight.uss" />
     <None Include="Assets\3D Assets\Stylized Fantasy Armory\Prefabs\Extra Content\Fantasy Female Character Leona - Props\README.txt" />
