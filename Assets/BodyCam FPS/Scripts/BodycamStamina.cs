@@ -12,6 +12,8 @@ namespace PurgeFPS
     ///  - Stamina regenerates after a short delay once you stop spending it.
     ///  - If stamina hits zero the player is "exhausted": running stays blocked until it recovers
     ///    to Exhausted Recover Amount.
+    ///  - Stamina Enabled turns the whole system off: nothing costs stamina, nothing is blocked,
+    ///    and the bar is hidden. Use Toggle Key to switch it in Play mode.
     ///
     /// The stamina bar is created automatically at runtime (no UI setup needed).
     /// Melee swing cost is set per swing on the melee weapon (Attack Chain > Stamina Cost).
@@ -19,6 +21,13 @@ namespace PurgeFPS
     [AddComponentMenu("Realistic Bodycam/Stamina")]
     public class BodycamStamina : MonoBehaviour
     {
+        [Header("TOGGLE")]
+        [Tooltip("Off = stamina is disabled: running, jumping, dodging and swings are free and never blocked, and the bar is hidden.")]
+        public bool staminaEnabled = true;
+
+        [Tooltip("Optional key to switch stamina on and off while playing. None = no shortcut.")]
+        public KeyCode toggleKey = KeyCode.None;
+
         [Header("STAMINA")]
         public float maxStamina = 100f;
 
@@ -71,9 +80,13 @@ namespace PurgeFPS
         public float Current => current;
         public float Normalized => maxStamina > 0f ? current / maxStamina : 0f;
         public bool IsExhausted => exhausted;
+        public bool IsEnabled => staminaEnabled;
 
-        /// <summary>False while exhausted or empty. BodycamFPSController checks this before running.</summary>
-        public bool CanRun => !exhausted && current > 0f;
+        /// <summary>
+        /// False while exhausted or empty. BodycamFPSController checks this before running.
+        /// Always true while stamina is switched off.
+        /// </summary>
+        public bool CanRun => !staminaEnabled || (!exhausted && current > 0f);
 
         void Awake()
         {
@@ -94,12 +107,45 @@ namespace PurgeFPS
                 canvasGroup.alpha = 0f;
         }
 
+        /// <summary>Switches the stamina system on or off. Turning it off refills stamina and clears exhaustion.</summary>
+        public void SetStaminaEnabled(bool on)
+        {
+            staminaEnabled = on;
+
+            if (!on)
+            {
+                current = maxStamina;
+                exhausted = false;
+            }
+        }
+
+        /// <summary>Flips the stamina system on or off (handy for a UI button).</summary>
+        public void ToggleStamina()
+        {
+            SetStaminaEnabled(!staminaEnabled);
+        }
+
         void Update()
         {
             float dt = Time.deltaTime;
 
+            if (toggleKey != KeyCode.None && Input.GetKeyDown(toggleKey))
+                SetStaminaEnabled(!staminaEnabled);
+
             if (dt <= 0f)
                 return;
+
+            // Switched off in the Inspector: keep stamina full, no drain, bar hidden.
+            if (!staminaEnabled)
+            {
+                if (current < maxStamina)
+                    current = maxStamina;
+
+                exhausted = false;
+                lastPosition = transform.position;
+                UpdateBar(dt);
+                return;
+            }
 
             // Real horizontal speed (the controller moves the player with two Move() calls per frame).
             Vector3 delta = transform.position - lastPosition;
@@ -127,9 +173,12 @@ namespace PurgeFPS
             UpdateBar(dt);
         }
 
-        /// <summary>Spends stamina if there is enough. Returns false (and spends nothing) otherwise.</summary>
+        /// <summary>Spends stamina if there is enough. Returns false (and spends nothing) otherwise. Always true while stamina is switched off.</summary>
         public bool TryConsume(float cost)
         {
+            if (!staminaEnabled)
+                return true;
+
             if (cost <= 0f)
                 return true;
 
@@ -227,7 +276,8 @@ namespace PurgeFPS
                 fillImage.color = exhausted ? exhaustedColor : fillColor;
             }
 
-            float targetAlpha = (!hideWhenFull || exhausted || current < maxStamina - 0.01f) ? 1f : 0f;
+            // The bar is always hidden while stamina is switched off.
+            float targetAlpha = staminaEnabled && (!hideWhenFull || exhausted || current < maxStamina - 0.01f) ? 1f : 0f;
 
             if (!Mathf.Approximately(canvasGroup.alpha, targetAlpha))
                 canvasGroup.alpha = Mathf.MoveTowards(canvasGroup.alpha, targetAlpha, fadeSpeed * dt);

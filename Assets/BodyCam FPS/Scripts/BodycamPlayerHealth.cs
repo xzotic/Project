@@ -116,10 +116,27 @@ namespace PurgeFPS
             SetDisconnectedOverlay(0f);
         }
 
-        public void TakeDamage(float damage)
+        public void TakeDamage(float damage) => ApplyDamage(damage, Vector3.zero, false);
+        public void TakeDamageFrom(float damage, Vector3 sourcePosition) => ApplyDamage(damage, sourcePosition, true);
+
+        void ApplyDamage(float damage, Vector3 sourcePosition, bool hasSource)
         {
             if (IsDead || invincible || damage <= 0f)
                 return;
+
+            BodycamViewmodelMelee melee = (weaponRoot != null ? weaponRoot : gameObject)
+                .GetComponentInChildren<BodycamViewmodelMelee>();
+
+            if (melee != null)
+            {
+                BlockResult result;
+                damage = hasSource
+                    ? melee.ProcessIncomingDamage(damage, sourcePosition, out result)
+                    : melee.ProcessIncomingDamage(damage, out result);
+
+                if (damage <= 0f)
+                    return;
+            }
 
             CurrentHealth = Mathf.Max(0f, CurrentHealth - damage);
             onDamaged?.Invoke();

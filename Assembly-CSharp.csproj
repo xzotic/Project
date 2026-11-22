@@ -97,6 +97,7 @@
     <Compile Include="Assets\BodyCam FPS\Scripts\BodycamWeaponFlashlight.cs" />
     <Compile Include="Assets\BodyCam FPS\Scripts\BodycamOverlayMotion.cs" />
     <Compile Include="Assets\BodyCam FPS\Scripts\BodycamWindSound.cs" />
+    <Compile Include="Assets\OddlyShapedDog\FastRetroCRTEffects\URPRetroScreen.cs" />
     <Compile Include="Assets\BodyCam FPS\Scripts\BodycamAdvancedShootingSystem.cs" />
     <Compile Include="Assets\BodyCam FPS\Scripts\BodycamStaminaBreathingAudio.cs" />
     <Compile Include="Assets\BodyCam FPS\Scripts\BodycamPlayerHealth.cs" />
@@ -109,10 +110,11 @@
     <None Include="Assets\OddlyShapedDog\FastRetroCRTEffects\README.txt" />
     <None Include="Assets\OddlyShapedDog\FastRetroCRTEffects\Shaders\FastCRTSimple.shader" />
     <None Include="Assets\TutorialInfo\StyleSheets\ReadmeEditor.uss" />
+    <None Include="Assets\FPS VIewport\RetroDither.shader" />
     <None Include="Assets\FPS VIewport\MuzzleFlash\AlphaBlendedAnim.shader" />
-    <None Include="Assets\Daniel Mistage\Stylized Fantasy Armory\Prefabs\Extra Content\Fantasy Female Character Hetalia - Props\README.txt" />
+    <None Include="Assets\3D Assets\Stylized Fantasy Armory\Prefabs\Extra Content\Fantasy Female Character Hetalia - Props\README.txt" />
     <None Include="Assets\TutorialInfo\StyleSheets\ReadmeEditorLight.uss" />
-    <None Include="Assets\Daniel Mistage\Stylized Fantasy Armory\Prefabs\Extra Content\Fantasy Female Character Leona - Props\README.txt" />
+    <None Include="Assets\3D Assets\Stylized Fantasy Armory\Prefabs\Extra Content\Fantasy Female Character Leona - Props\README.txt" />
     <None Include="Assets\FPS VIewport\Human Animations\Unity Demo Scenes\Human Melee Animations\Shaders\HumanMeleeAnimationsScene.shader" />
     <None Include="Assets\TutorialInfo\StyleSheets\ReadmeEditorDark.uss" />
     <None Include="Assets\OddlyShapedDog\FastRetroCRTEffects\Shaders\FastColorReduction.shader" />

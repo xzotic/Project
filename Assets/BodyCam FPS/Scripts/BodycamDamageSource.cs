@@ -24,7 +24,7 @@ namespace PurgeFPS
             if (health == null)
                 return;
 
-            health.TakeDamage(damage);
+            health.TakeDamageFrom(damage, transform.position);
 
             if (destroyAfterHit)
                 Destroy(gameObject);
